@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para las lecturas recomendadas
+model Reading {
+id        Int      @id @default(autoincrement())
+title     String
+author    String
+category  String   // Ej: "Novela", "Técnica de Escritura", "Poesía"
+summary   String?
+link      String?
+createdAt DateTime @default(now())
+}
+
+// Modelo para las entradas del blog
+model BlogPost {
+id          Int      @id @default(autoincrement())
+title       String
+content     String
+authorName  String   @default("Escritor Anónimo") // Un valor por defecto para el MVP
+createdAt   DateTime @default(now())
+}
