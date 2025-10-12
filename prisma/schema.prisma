@@ -11,22 +11,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo para las lecturas recomendadas
+// Modelo de Usuario (auth simple)
+model User {
+  id            Int            @id @default(autoincrement())
+  username      String         @unique
+  password      String         // Almacenar hash, nunca texto plano
+  createdAt     DateTime       @default(now())
+  
+  // Relaciones
+  blogPosts     BlogPost[]
+  freeWriteEntries FreeWriteEntry[]
+  microcuentos  Microcuento[]
+  entornoEntries EntornoEntry[]
+  personajeEntries PersonajeEntry[]
+  reescrituras  Reescritura[]
+}
+
+// Modelo para las lecturas recomendadas (contenido público, no requiere userId)
 model Reading {
-id        Int      @id @default(autoincrement())
-title     String
-author    String
-category  String   // Ej: "Novela", "Técnica de Escritura", "Poesía"
-summary   String?
-link      String?
-createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  title     String
+  author    String
+  category  String   // Ej: "Novela", "Técnica de Escritura", "Poesía"
+  summary   String?
+  link      String?
+  createdAt DateTime @default(now())
 }
 
 // Modelo para las entradas del blog
 model BlogPost {
-id          Int      @id @default(autoincrement())
-title       String
-content     String
-authorName  String   @default("Escritor Anónimo") // Un valor por defecto para el MVP
-createdAt   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
+
+// Modelo para escritura libre
+model FreeWriteEntry {
+  id              Int      @id @default(autoincrement())
+  text            String
+  durationMinutes Int
+  wordCount       Int      @default(0)
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+}
+
+// Modelo para microcuentos
+model Microcuento {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String
+  wordCount Int      @default(0)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// Modelo para describe tu entorno
+model EntornoEntry {
+  id        Int      @id @default(autoincrement())
+  location  String?  // Ej: "Mi cuarto", "La cafetería"
+  content   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// Modelo para diario de personaje
+model PersonajeEntry {
+  id            Int      @id @default(autoincrement())
+  characterName String
+  content       String
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+}
+
+// Modelo para reescritura de cuentos
+model Reescritura {
+  id            Int      @id @default(autoincrement())
+  originalStory String   // Nombre del cuento original
+  rewrite       String   // La reescritura del usuario
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
 }

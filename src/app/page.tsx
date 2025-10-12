@@ -1,68 +1,96 @@
 
+import Link from 'next/link'
+import { BookOpen, Users, Library, Pen } from 'lucide-react'
+
 export default function Home() {
+  const sections = [
+    {
+      title: 'Ejercicios de Escritura',
+      description: 'Practica con ejercicios diseñados para desarrollar tu técnica de escritura.',
+      icon: Pen,
+      href: '/ejercicios',
+      color: 'text-azul-tinta'
+    },
+    {
+      title: 'Blog Comunitario',
+      description: 'Comparte tus escritos y conecta con otros escritores.',
+      icon: Users,
+      href: '/blog',
+      color: 'text-naranja-quemado'
+    },
+    {
+      title: 'Lecturas Recomendadas',
+      description: 'Descubre libros esenciales para escritores.',
+      icon: Library,
+      href: '/lecturas',
+      color: 'text-verde-oliva'
+    },
+    {
+      title: 'Mis Escritos',
+      description: 'Accede a todos tus trabajos guardados y revisa tu progreso.',
+      icon: BookOpen,
+      href: '/mis-escritos',
+      color: 'text-azul-tinta'
+    }
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       {/* Hero Section */}
-      <header className="text-center py-6">
-        <h1 className="text-4xl font-bold mb-4 font-merriweather" style={{ color: '#264653' }}>
+      <header className="text-center py-8">
+        <h1 className="text-5xl font-bold mb-4 font-merriweather text-azul-tinta">
           Bienvenido a Verba Viva
         </h1>
-        <p className="text-lg opacity-80 max-w-2xl mx-auto">
+        <p className="text-xl opacity-80 max-w-2xl mx-auto">
           Tu pequeño espacio para crecer como escritor.
         </p>
       </header>
 
-      {/* Personal Story Section */}
-      <section className="bg-white p-6 rounded-lg border" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
-        <h2 className="text-2xl font-bold mb-4 font-merriweather" style={{ color: '#264653' }}>
-          ¿Por qué Verba Viva?
-        </h2>
-        <div className="space-y-4">
-          <p className="text-base leading-relaxed opacity-90">
-            Desde temprana edad he tenido demasiada imaginación, razón por la cual podía imaginar historias que seguían una línea argumental durante bastante tiempo. Cuando llegué a la preparatoria empecé a intentar escribir esas historias que pasaban por mi mente, y poco a poco fui desarrollando el gusto por la escritura, pasando de esas historias inverosímiles donde me autoproyectaba como el protagonista, a escribir relatos cortos e historias más largas con diferentes protagonistas e historias más diversas.
-          </p>
-          <p className="text-base leading-relaxed opacity-90">
-            Tristemente, al pasar a la universidad y pasar por diferentes estados anímicos desfavorables, dejé de escribir por un período muy largo de tiempo hasta que recientemente tomé la decisión de retomar la escritura. Pero al intentarlo me di cuenta de que había perdido toda la práctica: no lograba conectar con mi creatividad y no sabía cómo empezar a escribir de nuevo. Tuve que volver a lo básico, buscar guías, tomar lecturas tanto ligeras como más pesadas, lo cual no es malo, me ayudó a retomar también el hábito de la lectura, y entre esas búsquedas vi varios consejos para practicar desde lo más sencillo.
-          </p>
-          <p className="text-base leading-relaxed opacity-90">
-            Esa es la razón por la cual desarrollé Verba Viva: para tener a la mano todas esas sesiones de práctica y guardarme un registro, porque como todos sabemos, individualmente nadie es capaz de ver su progreso, y qué mejor que poder tenerlo todo en un solo lugar.
-          </p>
+      {/* Quick Access Grid */}
+      <section>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {sections.map((section) => {
+            const Icon = section.icon
+            return (
+              <Link
+                key={section.href}
+                href={section.href}
+                className="group bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-azul-tinta dark:hover:border-azul-tinta transition-all duration-300 hover:shadow-lg"
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`${section.color} group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon size={48} strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold mb-2 font-merriweather text-azul-tinta group-hover:text-naranja-quemado transition-colors">
+                      {section.title}
+                    </h3>
+                    <p className="text-sm opacity-70 leading-relaxed">
+                      {section.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section>
-        <h2 className="text-2xl font-bold mb-6 text-center font-merriweather" style={{ color: '#264653' }}>
-          Explora las Secciones
+      {/* Call to Action */}
+      <section className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+        <h2 className="text-2xl font-bold mb-4 font-merriweather text-azul-tinta">
+          ¿Listo para comenzar?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg border" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: '#264653' }}>
-              Ejercicios de Escritura
-            </h3>
-            <p className="text-sm opacity-70">
-              Practica con ejercicios diseñados para desarrollar tu técnica de escritura.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg border" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: '#264653' }}>
-              Blog Comunitario
-            </h3>
-            <p className="text-sm opacity-70">
-              Comparte tus escritos y conecta con otros escritores.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg border" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: '#264653' }}>
-              Lecturas Recomendadas
-            </h3>
-            <p className="text-sm opacity-70">
-              Descubre libros esenciales para escritores.
-            </p>
-          </div>
-        </div>
+        <p className="text-base opacity-80 mb-6 max-w-2xl mx-auto">
+          La práctica constante es la clave para mejorar. Elige una sección y comienza tu viaje de escritura hoy.
+        </p>
+        <Link
+          href="/ejercicios"
+          className="inline-block bg-azul-tinta hover:bg-naranja-quemado text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-300"
+        >
+          Comenzar a Escribir
+        </Link>
       </section>
     </div>
   )

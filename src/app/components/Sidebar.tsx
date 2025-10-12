@@ -4,24 +4,33 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import Image from "next/image"
+import { useSession, signOut } from "next-auth/react"
+import type { Session } from "next-auth"
+import AuthModal from "./AuthModal"
 import {
-    MessageSquareIcon,
     HomeIcon,
     ClockIcon,
     FileTextIcon,
     EyeIcon,
     UserIcon,
     RefreshCwIcon,
-    SparklesIcon,
     BookIcon,
     MenuIcon,
-    XIcon
+    XIcon,
+    InfoIcon,
+    LogOutIcon,
+    LogInIcon
 } from 'lucide-react';
 const navigation = [
     {
         name: 'Inicio',
         href: '/',
         icon: HomeIcon
+    },
+    {
+        name: 'Nosotros',
+        href: '/nosotros',
+        icon: InfoIcon
     },
     {
         name: 'Escritura Libre',
@@ -48,16 +57,16 @@ const navigation = [
         href: '/ejercicios/reescritura-de-cuentos',
         icon: RefreshCwIcon
     },
-    {
-        name: 'Generadores de Ideas',
-        href: '/ejercicios/prompts',
-        icon: SparklesIcon
-    },
-    {
-        name: 'Blog',
-        href: '/blog',
-        icon: MessageSquareIcon
-    },
+    // {
+    //     name: 'Generadores de Ideas',
+    //     href: '/ejercicios/prompts',
+    //     icon: SparklesIcon
+    // },
+    // {
+    //     name: 'Blog',
+    //     href: '/blog',
+    //     icon: MessageSquareIcon
+    // },
     {
         name: 'Lecturas Recomendadas',
         href: '/lecturas-recomendadas',
@@ -68,6 +77,8 @@ const navigation = [
 const Sidebar = () => {
     const pathname = usePathname()
     const [isOpen, setIsOpen] = useState(false)
+    const [authModalOpen, setAuthModalOpen] = useState(false)
+    const { data: session } = useSession()
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
@@ -104,7 +115,12 @@ const Sidebar = () => {
                     backgroundColor: 'var(--color-fondo)',
                     borderRightColor: 'rgba(38, 70, 83, 0.2)'
                 }}>
-                    <SidebarContent pathname={pathname} onLinkClick={() => setIsOpen(false)} />
+                    <SidebarContent
+                        pathname={pathname}
+                        onLinkClick={() => setIsOpen(false)}
+                        session={session}
+                        onAuthClick={() => setAuthModalOpen(true)}
+                    />
                 </div>
             </aside>
 
@@ -114,21 +130,65 @@ const Sidebar = () => {
                 borderRightColor: 'rgba(38, 70, 83, 0.2)'
             }}>
                 <div className="flex flex-col h-full space-y-6">
-                    <SidebarContent pathname={pathname} />
+                    <SidebarContent
+                        pathname={pathname}
+                        session={session}
+                        onAuthClick={() => setAuthModalOpen(true)}
+                    />
                 </div>
             </aside>
+
+            {/* Modal de autenticación */}
+            <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
         </>
     );
 }
 
 // Componente reutilizable para el contenido de la sidebar
-const SidebarContent = ({ pathname, onLinkClick }: { pathname: string, onLinkClick?: () => void }) => (
+const SidebarContent = ({
+    pathname,
+    onLinkClick,
+    session,
+    onAuthClick
+}: {
+    pathname: string
+    onLinkClick?: () => void
+    session: Session | null
+    onAuthClick: () => void
+}) => (
     <>
         {/* Logo */}
         <div className="flex-shrink-0">
             <Link href="/" className="flex items-center p-2" onClick={onLinkClick}>
                 <Image src="/logo.png" alt="Verba Viva" width={120} height={120} />
             </Link>
+        </div>
+
+        {/* Usuario / Auth */}
+        <div className="flex-shrink-0 pb-4 border-b" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
+            {session?.user ? (
+                <div className="flex items-center justify-between p-2 rounded-md bg-verde-oliva/10">
+                    <div className="flex items-center gap-2">
+                        <UserIcon size={16} className="text-azul-tinta" />
+                        <span className="text-sm font-medium truncate">{session.user.name}</span>
+                    </div>
+                    <button
+                        onClick={() => signOut()}
+                        className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded transition-colors"
+                        title="Cerrar sesión"
+                    >
+                        <LogOutIcon size={16} className="text-red-600" />
+                    </button>
+                </div>
+            ) : (
+                <button
+                    onClick={onAuthClick}
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-azul-tinta text-white hover:bg-naranja-quemado transition-colors text-sm font-medium"
+                >
+                    <LogInIcon size={16} />
+                    Iniciar Sesión
+                </button>
+            )}
         </div>
 
         {/* Navegación */}
