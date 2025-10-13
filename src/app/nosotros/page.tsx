@@ -1,7 +1,6 @@
 const Nosotros = () => {
     return (
         <div className="max-w-6xl mx-auto space-y-8">
-            {/* Hero Section */}
             <header className="text-center py-6">
                 <h1 className="text-4xl font-bold mb-4 font-merriweather text-azul-tinta">
                     Sobre Verba Viva
@@ -11,7 +10,6 @@ const Nosotros = () => {
                 </p>
             </header>
 
-            {/* Personal Story Section */}
             <section className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold mb-4 font-merriweather text-azul-tinta">
                     ¿Por qué Verba Viva?
@@ -29,9 +27,7 @@ const Nosotros = () => {
                 </div>
             </section>
 
-            {/* Mission and Vision Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Mission Section */}
                 <section className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-bold mb-4 font-merriweather text-azul-tinta">
                         Nuestra Misión
@@ -41,7 +37,6 @@ const Nosotros = () => {
                     </p>
                 </section>
 
-                {/* Vision Section */}
                 <section className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-bold mb-4 font-merriweather text-azul-tinta">
                         Nuestra Visión

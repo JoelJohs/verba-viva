@@ -15,12 +15,16 @@ import {
     UserIcon,
     RefreshCwIcon,
     BookIcon,
+    ChevronDown,
+    ChevronRight,
     MenuIcon,
     XIcon,
     InfoIcon,
     LogOutIcon,
     LogInIcon
 } from 'lucide-react';
+import type { LucideProps } from 'lucide-react'
+
 const navigation = [
     {
         name: 'Inicio',
@@ -82,12 +86,10 @@ const Sidebar = () => {
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
-        console.log('Sidebar toggled:', !isOpen) // Debug temporal
     }
 
     return (
         <>
-            {/* Botón para móvil */}
             <button
                 onClick={toggleSidebar}
                 className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-md text-white shadow-lg hover:opacity-90 transition-colors"
@@ -100,7 +102,6 @@ const Sidebar = () => {
                 )}
             </button>
 
-            {/* Overlay para móvil */}
             {isOpen && (
                 <div
                     className="lg:hidden fixed inset-0 bg-black/50 z-40"
@@ -108,7 +109,6 @@ const Sidebar = () => {
                 />
             )}
 
-            {/* Sidebar en móvil (overlay) */}
             <aside className={`lg:hidden fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}>
                 <div className="flex flex-col h-screen w-64 border-r p-6 space-y-6" style={{
@@ -124,7 +124,6 @@ const Sidebar = () => {
                 </div>
             </aside>
 
-            {/* Sidebar en desktop (parte del layout) */}
             <aside className="hidden lg:flex flex-col w-64 border-r p-6 h-screen sticky top-0" style={{
                 backgroundColor: 'var(--color-fondo)',
                 borderRightColor: 'rgba(38, 70, 83, 0.2)'
@@ -138,13 +137,66 @@ const Sidebar = () => {
                 </div>
             </aside>
 
-            {/* Modal de autenticación */}
             <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
         </>
     );
 }
 
-// Componente reutilizable para el contenido de la sidebar
+type NavItem = {
+    name: string
+    href: string
+    icon: React.ComponentType<LucideProps>
+}
+
+const EjerciciosSection = ({
+    pathname,
+    items,
+    onLinkClick
+}: {
+    pathname: string
+    items: NavItem[]
+    onLinkClick?: () => void
+}) => {
+    const [open, setOpen] = useState<boolean>(pathname.startsWith('/ejercicios'))
+
+    return (
+        <div>
+            <button
+                onClick={() => setOpen(!open)}
+                className={`w-full flex items-center justify-between gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${open ? 'text-white' : 'text-texto hover:bg-verde-oliva/10 hover:text-azul-tinta'}`}
+                style={open ? { backgroundColor: '#264653' } : {}}
+                aria-expanded={open}
+            >
+                <span className="flex items-center gap-3">
+                    <BookIcon className="h-4 w-4" />
+                    Ejercicios
+                </span>
+                {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </button>
+
+            {open && (
+                <div className="mt-1 space-y-1 pl-6">
+                    {items.map(item => {
+                        const isActive = pathname === item.href
+                        return (
+                            <Link
+                                key={item.name}
+                                href={item.href}
+                                onClick={onLinkClick}
+                                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${isActive ? 'text-white' : 'text-texto hover:bg-verde-oliva/10 hover:text-azul-tinta'}`}
+                                style={isActive ? { backgroundColor: '#264653' } : {}}
+                            >
+                                <item.icon className="h-3.5 w-3.5" />
+                                {item.name}
+                            </Link>
+                        )
+                    })}
+                </div>
+            )}
+        </div>
+    )
+}
+
 const SidebarContent = ({
     pathname,
     onLinkClick,
@@ -155,16 +207,15 @@ const SidebarContent = ({
     onLinkClick?: () => void
     session: Session | null
     onAuthClick: () => void
-}) => (
-    <>
-        {/* Logo */}
+}) => {
+    return (
+        <>
         <div className="flex-shrink-0">
             <Link href="/" className="flex items-center p-2" onClick={onLinkClick}>
                 <Image src="/logo.png" alt="Verba Viva" width={120} height={120} />
             </Link>
         </div>
 
-        {/* Usuario / Auth */}
         <div className="flex-shrink-0 pb-4 border-b" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
             {session?.user ? (
                 <div className="flex items-center justify-between p-2 rounded-md bg-verde-oliva/10">
@@ -191,9 +242,8 @@ const SidebarContent = ({
             )}
         </div>
 
-        {/* Navegación */}
         <nav className="flex-1 space-y-1 overflow-y-auto">
-            {navigation.map((item) => {
+            {navigation.filter(item => !item.href.startsWith('/ejercicios')).map(item => {
                 const isActive = pathname === item.href
                 return (
                     <Link
@@ -209,11 +259,16 @@ const SidebarContent = ({
                         <item.icon className="h-4 w-4" />
                         {item.name}
                     </Link>
-                );
+                )
             })}
+
+            <EjerciciosSection
+                pathname={pathname}
+                items={navigation.filter(item => item.href.startsWith('/ejercicios'))}
+                onLinkClick={onLinkClick}
+            />
         </nav>
 
-        {/* Footer */}
         <div className="flex-shrink-0 border-t pt-4" style={{ borderColor: 'rgba(38, 70, 83, 0.1)' }}>
             <div className="text-xs space-y-2" style={{ color: 'rgba(38, 70, 83, 0.6)' }}>
                 <p className="font-medium italic" style={{ color: '#264653' }}>
@@ -229,6 +284,7 @@ const SidebarContent = ({
             </div>
         </div>
     </>
-);
+    )
+}
 
 export default Sidebar

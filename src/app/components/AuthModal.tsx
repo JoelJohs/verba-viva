@@ -25,7 +25,6 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         try {
             if (isLogin) {
-                // Login
                 const result = await signIn('credentials', {
                     username,
                     password,
@@ -36,10 +35,9 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     setError('Usuario o contraseña incorrectos')
                 } else {
                     onClose()
-                    window.location.reload() // Recargar para actualizar el estado
+                    window.location.reload()
                 }
             } else {
-                // Registro
                 const res = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -51,7 +49,6 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 if (!res.ok) {
                     setError(data.error || 'Error al registrar')
                 } else {
-                    // Después de registrar, hacer login automático
                     const result = await signIn('credentials', {
                         username,
                         password,
@@ -66,7 +63,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     }
                 }
             }
-        } catch (err) {
+        } catch {
             setError('Error de conexión')
         } finally {
             setLoading(false)

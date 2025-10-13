@@ -36,7 +36,6 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Hero Section */}
       <header className="text-center py-8">
         <h1 className="text-5xl font-bold mb-4 font-merriweather text-azul-tinta">
           Bienvenido a Verba Viva
@@ -46,7 +45,6 @@ export default function Home() {
         </p>
       </header>
 
-      {/* Quick Access Grid */}
       <section>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -77,7 +75,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
         <h2 className="text-2xl font-bold mb-4 font-merriweather text-azul-tinta">
           ¿Listo para comenzar?
