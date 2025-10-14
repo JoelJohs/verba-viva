@@ -9,29 +9,33 @@ export default function InfoPanel() {
     <aside className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm h-fit sticky top-6">
       <div className="p-6 space-y-6">
         <div>
-          <h3 className="text-base font-semibold mb-2 font-merriweather text-azul-tinta">¿Por qué funciona?</h3>
+          <h3 className="text-base font-semibold mb-2 font-merriweather text-azul-tinta">El Objetivo</h3>
           <p className="text-sm opacity-80 leading-relaxed">
-            Nuestro cerebro está entrenado para juzgar y estructurar, lo que causa el &quot;bloqueo&quot;. La escritura libre rompe esa barrera: al no parar, le quitas poder al crítico interno y generas momentum.
+            Dominar la economía del lenguaje y entender la esencia de una historia completa en un espacio mínimo.
           </p>
         </div>
 
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h3 className="text-base font-semibold mb-3 font-merriweather text-azul-tinta">Cómo hacerlo</h3>
-          <ol className="text-sm opacity-80 space-y-2 list-decimal pl-4">
-            <li>Elige un preset de tiempo (empieza con 5 minutos)</li>
-            <li>Pulsa <strong>Iniciar</strong> y deja el editor en blanco</li>
-            <li>Escribe continuamente sin detenerte ni editar</li>
-            <li>Si te bloqueas, escribe &quot;no sé qué escribir&quot;</li>
-            <li>Revisa tu texto después de la sesión si quieres</li>
-          </ol>
+          <h3 className="text-base font-semibold mb-2 font-merriweather text-azul-tinta">¿Por qué funciona?</h3>
+          <p className="text-sm opacity-80 leading-relaxed">
+            Te obliga a identificar los tres pilares de cualquier relato: un personaje con un deseo, un conflicto que se lo impide y una resolución. Es un entrenamiento intensivo en estructura narrativa.
+          </p>
+        </div>
+
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="text-base font-semibold mb-3 font-merriweather text-azul-tinta">¿Cómo hacerlo?</h3>
+          <p className="text-sm opacity-80 leading-relaxed mb-3">
+            Piensa en una imagen potente o una frase final impactante y construye hacia atrás. Usa la técnica del &quot;iceberg&quot;: sugiere una historia más grande.
+          </p>
         </div>
 
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <h3 className="text-base font-semibold mb-3 font-merriweather text-azul-tinta">Consejos</h3>
           <ul className="text-sm opacity-80 space-y-2 list-disc pl-4">
-            <li>Empieza con sesiones cortas</li>
-            <li>Acepta la mala primera versión</li>
-            <li>Prueba escribir con música de fondo</li>
+            <li>Empieza por el final</li>
+            <li>Cada palabra debe tener un propósito</li>
+            <li>Sugiere más de lo que dices</li>
+            <li>Los tres pilares: personaje + deseo + conflicto</li>
           </ul>
         </div>
 

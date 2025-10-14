@@ -21,11 +21,24 @@ import {
     XIcon,
     InfoIcon,
     LogOutIcon,
-    LogInIcon
+    LogInIcon,
+    Zap,
+    Flame,
+    Lightbulb
 } from 'lucide-react';
 import type { LucideProps } from 'lucide-react'
 
-const navigation = [
+type ExerciseType = 'calentamiento' | 'fuerza'
+
+type NavItem = {
+    name: string
+    href: string
+    icon: React.ComponentType<LucideProps>
+    exerciseType?: ExerciseType
+    duration?: string
+}
+
+const navigation: NavItem[] = [
     {
         name: 'Inicio',
         href: '/',
@@ -37,29 +50,44 @@ const navigation = [
         icon: InfoIcon
     },
     {
+        name: 'Consejos',
+        href: '/consejos',
+        icon: Lightbulb
+    },
+    {
         name: 'Escritura Libre',
         href: '/ejercicios/escritura-libre',
-        icon: ClockIcon
+        icon: ClockIcon,
+        exerciseType: 'calentamiento',
+        duration: '10-15 min'
     },
     {
         name: 'Microcuentos',
         href: '/ejercicios/microcuentos',
-        icon: FileTextIcon
+        icon: FileTextIcon,
+        exerciseType: 'fuerza',
+        duration: '30-60 min'
     },
     {
         name: 'Describe tu Entorno',
         href: '/ejercicios/entorno',
-        icon: EyeIcon
+        icon: EyeIcon,
+        exerciseType: 'fuerza',
+        duration: '30-45 min'
     },
     {
         name: 'Diario de Personaje',
         href: '/ejercicios/diario-de-personaje',
-        icon: UserIcon
+        icon: UserIcon,
+        exerciseType: 'fuerza',
+        duration: '45-60 min'
     },
     {
         name: 'Reescritura de Cuentos',
         href: '/ejercicios/reescritura-de-cuentos',
-        icon: RefreshCwIcon
+        icon: RefreshCwIcon,
+        exerciseType: 'fuerza',
+        duration: '60+ min'
     },
     // {
     //     name: 'Generadores de Ideas',
@@ -142,12 +170,6 @@ const Sidebar = () => {
     );
 }
 
-type NavItem = {
-    name: string
-    href: string
-    icon: React.ComponentType<LucideProps>
-}
-
 const EjerciciosSection = ({
     pathname,
     items,
@@ -158,6 +180,9 @@ const EjerciciosSection = ({
     onLinkClick?: () => void
 }) => {
     const [open, setOpen] = useState<boolean>(pathname.startsWith('/ejercicios'))
+
+    const calentamiento = items.filter(item => item.exerciseType === 'calentamiento')
+    const fuerza = items.filter(item => item.exerciseType === 'fuerza')
 
     return (
         <div>
@@ -175,22 +200,64 @@ const EjerciciosSection = ({
             </button>
 
             {open && (
-                <div className="mt-1 space-y-1 pl-6">
-                    {items.map(item => {
-                        const isActive = pathname === item.href
-                        return (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                onClick={onLinkClick}
-                                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${isActive ? 'text-white' : 'text-texto hover:bg-verde-oliva/10 hover:text-azul-tinta'}`}
-                                style={isActive ? { backgroundColor: '#264653' } : {}}
-                            >
-                                <item.icon className="h-3.5 w-3.5" />
-                                {item.name}
-                            </Link>
-                        )
-                    })}
+                <div className="mt-1 space-y-3 pl-3">
+                    {calentamiento.length > 0 && (
+                        <div>
+                            <div className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-green-600 dark:text-green-400">
+                                <Zap size={12} />
+                                <span>Calentamiento</span>
+                            </div>
+                            <div className="space-y-1">
+                                {calentamiento.map(item => {
+                                    const isActive = pathname === item.href
+                                    return (
+                                        <Link
+                                            key={item.name}
+                                            href={item.href}
+                                            onClick={onLinkClick}
+                                            className={`flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors ${isActive ? 'text-white' : 'text-texto hover:bg-verde-oliva/10 hover:text-azul-tinta'}`}
+                                            style={isActive ? { backgroundColor: '#264653' } : {}}
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <item.icon className="h-3.5 w-3.5" />
+                                                {item.name}
+                                            </span>
+                                            {item.duration && <span className="text-xs opacity-60">{item.duration}</span>}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {fuerza.length > 0 && (
+                        <div>
+                            <div className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-600 dark:text-orange-400">
+                                <Flame size={12} />
+                                <span>Fuerza</span>
+                            </div>
+                            <div className="space-y-1">
+                                {fuerza.map(item => {
+                                    const isActive = pathname === item.href
+                                    return (
+                                        <Link
+                                            key={item.name}
+                                            href={item.href}
+                                            onClick={onLinkClick}
+                                            className={`flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors ${isActive ? 'text-white' : 'text-texto hover:bg-verde-oliva/10 hover:text-azul-tinta'}`}
+                                            style={isActive ? { backgroundColor: '#264653' } : {}}
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <item.icon className="h-3.5 w-3.5" />
+                                                {item.name}
+                                            </span>
+                                            {item.duration && <span className="text-xs opacity-60">{item.duration}</span>}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

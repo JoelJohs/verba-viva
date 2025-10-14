@@ -5,7 +5,8 @@ import Controls from './components/Controls'
 import EditorCard from './components/EditorCard'
 import InfoPanel from './components/InfoPanel'
 import SaveModal from './components/SaveModal'
-import OnTheGo from './components/OnTheGo'
+import DailyGoalCompact from '@/app/components/exercises/DailyGoalCompact'
+import IntensityBadge from '@/app/components/exercises/IntensityBadge'
 
 export default function FreewritingPage() {
     const presets = [5, 10, 15]
@@ -64,27 +65,46 @@ export default function FreewritingPage() {
     const pct = Math.round(((minutes * 60 - secondsLeft) / (minutes * 60)) * 100) || 0
 
     return (
-        <div className="max-w-6xl mx-auto py-8">
-            <div className="flex items-center justify-between mb-6">
-                <div>
-                    <h1 className="text-3xl font-bold font-merriweather text-azul-tinta">Escritura Libre</h1>
-                    <p className="text-sm opacity-80 mt-1">Silencia al editor interno, escribe sin parar.</p>
+        <div className="max-w-7xl mx-auto py-6 px-4">
+            <div className="mb-6">
+                <div className="flex items-start justify-between mb-4">
+                    <div>
+                        <h1 className="text-3xl font-bold font-merriweather text-azul-tinta mb-2">Escritura Libre</h1>
+                        <p className="text-sm opacity-70 mb-3">Silencia al editor interno, escribe sin parar.</p>
+                        <IntensityBadge type="calentamiento" duration="10-15 min" />
+                    </div>
                 </div>
+                
+                <DailyGoalCompact 
+                    goal="Completa una sesión de 5 a 15 minutos escribiendo sin detenerte."
+                    hint="Si te quedas en blanco, escribe 'no sé qué escribir' hasta que surja algo nuevo."
+                    intensity="calentamiento"
+                />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-                        <div className="lg:col-span-2 h-full flex flex-col">
-                            <div className={`bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col h-full ${modalOpen ? 'ring-4 ring-azul-tinta/30 animate-pulse' : ''}`}>
-                        <Controls presets={presets} minutes={minutes} onSelect={(m) => { if (!running && !modalOpen) { setMinutes(m); setSecondsLeft(m*60) } }} onStart={start} onReset={reset} secondsLeft={secondsLeft} running={running} modalOpen={modalOpen} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 space-y-4">
+                    <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm transition-all ${modalOpen ? 'ring-2 ring-azul-tinta/50 shadow-lg' : ''}`}>
+                        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                            <Controls 
+                                presets={presets} 
+                                minutes={minutes} 
+                                onSelect={(m: number) => { if (!running && !modalOpen) { setMinutes(m); setSecondsLeft(m*60) } }} 
+                                onStart={start} 
+                                onReset={reset} 
+                                secondsLeft={secondsLeft} 
+                                running={running} 
+                                modalOpen={modalOpen} 
+                            />
+                        </div>
                         <EditorCard text={text} setText={setText} pct={pct} textareaRef={textareaRef} />
                     </div>
                 </div>
 
-                <div className="h-full">
+                <div className="lg:col-span-1">
                     <InfoPanel />
                 </div>
             </div>
-            <OnTheGo />
 
             <SaveModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onSave={() => {/* placeholder for save action */}} title="¿Deseas guardar tu escrito?">
                 <p>Te recomendamos guardar tu escrito para poder ver tu progreso con el tiempo. Guardar te permite comparar versiones, medir tu volumen de práctica, y observar mejoras concretas en estilo y contenido.</p>
