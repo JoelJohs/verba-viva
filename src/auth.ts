@@ -12,6 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 username: { label: "Usuario", type: "text" },
                 password: { label: "Contraseña", type: "password" }
             },
+
             authorize: async (credentials) => {
                 if (!credentials?.username || !credentials?.password) {
                     return null
@@ -38,9 +39,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
         })
     ],
+
     pages: {
-        signIn: '/', // redirigir al home si no está autenticado
+        signIn: '/', // redirige a home si no está autenticado
     },
+    
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
