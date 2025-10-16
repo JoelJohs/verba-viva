@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Discusiones Generales
+    url: https://github.com/JoelJohs/verba-viva/discussions
+    about: Para ideas generales, preguntas abiertas o conversaciones sobre el proyecto
