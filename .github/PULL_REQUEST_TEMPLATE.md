@@ -1,6 +1,6 @@
 ---
 name: Pull Request
-about: Plantilla básica para Pull Requests
+about: Plantilla para Pull Requests
 ---
 
 # Pull Request
